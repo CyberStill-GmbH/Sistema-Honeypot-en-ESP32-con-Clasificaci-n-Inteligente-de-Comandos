@@ -1,0 +1,6 @@
+python-dotenv
+colorama
+pandas
+joblib
+scikit-learn
+flask
