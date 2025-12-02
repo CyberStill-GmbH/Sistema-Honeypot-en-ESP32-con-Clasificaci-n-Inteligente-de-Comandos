@@ -6,14 +6,7 @@ import joblib
 MODEL_DIR = os.path.join(os.path.dirname(__file__), 'models')
 os.makedirs(MODEL_DIR, exist_ok=True)
 
-import os
-from sklearn.feature_extraction.text import TfidfVectorizer
-from sklearn.linear_model import LogisticRegression
-import joblib
-
-MODEL_DIR = os.path.join(os.path.dirname(__file__), 'models')
-os.makedirs(MODEL_DIR, exist_ok=True)
-
+# Dataset de ejemplo
 X = [
     'get temp', 'get status', 'read sensor', 'ping google.com', 'check system status', 
     'status', 'get info', 'temp?', 'reboot system', 'get time', 'reset device', 
@@ -50,8 +43,7 @@ y = [
     'sospechoso', 'sospechoso', 'sospechoso', 'sospechoso', 'sospechoso', 'sospechoso', 'sospechoso', 'sospechoso', 
     'sospechoso', 'sospechoso', 'exploit', 'exploit', 'exploit', 'exploit', 'exploit', 'exploit', 'exploit', 'exploit', 
     'exploit', 'exploit', 'exploit', 'exploit', 'exploit', 'exploit', 'exploit', 'exploit', 'exploit', 'exploit', 
-    'exploit', 'exploit', 'exploit', 'exploit', 'exploit', 
-    'exploit'
+    'exploit', 'exploit', 'exploit', 'exploit', 'exploit', 'exploit',
 ]
 
 vectorizer = TfidfVectorizer(ngram_range=(1,2), max_features=2000)
@@ -61,5 +53,3 @@ model.fit(X_vec, y)
 
 joblib.dump({'model': model, 'vectorizer': vectorizer}, os.path.join(MODEL_DIR, 'modelo_persona2.joblib'))
 print('Modelo guardado en models/modelo_persona2.joblib')
-
-
