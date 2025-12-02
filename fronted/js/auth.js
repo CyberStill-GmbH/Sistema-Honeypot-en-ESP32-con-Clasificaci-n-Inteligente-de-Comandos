@@ -1,85 +1,69 @@
 // js/auth.js
 import { API_BASE } from "./config.js";
 
-// --- helpers de token (localStorage) ---
-export function getToken() {
+console.log("auth.js cargado ✅");
+
+// Helpers para token en localStorage
+function getToken() {
   return localStorage.getItem("siem_jwt");
 }
-
-export function setToken(token) {
+function setToken(token) {
   localStorage.setItem("siem_jwt", token);
 }
 
-export function clearToken() {
-  localStorage.removeItem("siem_jwt");
-}
+// Si más adelante quieres usarlo en otras páginas, puedes exportarlos:
+export { getToken, setToken };
 
-// Forzar que la página esté logueada (lo usarás en index/events/tokens)
-export function requireAuth() {
-  const token = getToken();
-  if (!token) {
-    window.location.href = "login.html";
-  }
-}
-
-// --- llamada al backend /auth/login ---
-export async function loginRequest(username, password) {
+// Función que llama al backend /auth/login
+async function loginRequest(username, password) {
   const res = await fetch(`${API_BASE}/auth/login`, {
-  method: "POST",
-  headers: { "Content-Type": "application/json" },
-  body: JSON.stringify({
-    username: document.getElementById("user").value,
-    password: document.getElementById("pass").value
-  })
-});
-
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ username, password }),
+  });
 
   if (!res.ok) {
-    const errData = await res.json().catch(() => ({}));
-    const msg = errData.error || "Credenciales inválidas";
+    const dataErr = await res.json().catch(() => ({}));
+    const msg = dataErr.error || "Credenciales inválidas";
     throw new Error(msg);
   }
 
   return res.json(); // { jwt: "..." }
 }
 
-// --- wiring del formulario de login (solo en login.html) ---
+// Wiring del formulario
 document.addEventListener("DOMContentLoaded", () => {
-  console.log("auth.js cargado, DOM listo");
+  console.log("DOM listo en login.html");
 
   const form = document.getElementById("login-form");
-  if (!form) {
-    console.log("No hay #login-form en esta página, salgo.");
-    return;
-  }
-
   const userInput = document.getElementById("user");
   const passInput = document.getElementById("pass");
   const errorBox = document.getElementById("login-error");
 
+  if (!form) {
+    console.warn("No se encontró #login-form en esta página");
+    return;
+  }
+
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
-    if (errorBox) errorBox.textContent = "";
+    errorBox.textContent = "";
 
     try {
       const data = await loginRequest(userInput.value, passInput.value);
-      console.log("Respuesta login:", data);
+      console.log("Respuesta del backend login:", data);
 
       if (!data.jwt) {
-        throw new Error("Respuesta del servidor sin JWT");
+        throw new Error("El servidor no devolvió JWT");
       }
 
       setToken(data.jwt);
 
-      // redirigimos al dashboard
+      // Redirigir al dashboard
       window.location.href = "index.html";
     } catch (err) {
       console.error("Error en login:", err);
-      if (errorBox) {
-        errorBox.textContent = err.message || "Error al iniciar sesión";
-      } else {
-        alert(err.message || "Error al iniciar sesión");
-      }
+      errorBox.textContent = err.message || "Error al iniciar sesión";
     }
   });
 });

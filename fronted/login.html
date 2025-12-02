@@ -2,7 +2,7 @@
 <html lang="es">
   <head>
     <meta charset="UTF-8" />
-    <title>Honeypot SIEM - Login</title>
+    <title>Login - Honeypot SIEM</title>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
 
     <link
@@ -16,21 +16,19 @@
     <div class="container">
       <div class="row justify-content-center">
         <div class="col-md-4">
-          <div class="card shadow-lg">
+          <div class="card bg-black text-light shadow">
             <div class="card-body">
-              <h4 class="card-title mb-3 text-center">🛡️ Honeypot SIEM</h4>
-              <p class="text-muted small text-center mb-4">
-                Inicia sesión como administrador
-              </p>
+              <h3 class="card-title mb-3 text-center">🛡️ Honeypot SIEM</h3>
+              <p class="text-muted text-center mb-4">Inicia sesión como administrador</p>
 
-              <form id="login-form">
+              <form id="form-login">
                 <div class="mb-3">
                   <label for="user" class="form-label">Usuario</label>
                   <input
                     type="text"
                     id="user"
                     class="form-control"
-                    autocomplete="username"
+                    placeholder="Usuario"
                     required
                   />
                 </div>
@@ -41,15 +39,15 @@
                     type="password"
                     id="pass"
                     class="form-control"
-                    autocomplete="current-password"
+                    placeholder="Contraseña"
                     required
                   />
                 </div>
 
-                <div id="login-error" class="text-danger small mb-2"></div>
+                <div id="login-error" class="text-danger small mb-2" style="display:none;"></div>
 
                 <button type="submit" class="btn btn-primary w-100">
-                  Entrar
+                  Iniciar sesión
                 </button>
               </form>
             </div>
@@ -58,7 +56,7 @@
       </div>
     </div>
 
-    <!-- auth.js se encarga de manejar el form -->
-    <script type="module" src="js/auth.js"></script>
+    <script src="js/config.js"></script>
+    <script src="js/login.js"></script>
   </body>
 </html>

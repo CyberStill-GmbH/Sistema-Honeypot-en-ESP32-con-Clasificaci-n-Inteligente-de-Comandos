@@ -2,7 +2,7 @@
 <html lang="es">
   <head>
     <meta charset="UTF-8" />
-    <title>Honeypot SIEM - Eventos</title>
+    <title>Eventos - Honeypot SIEM</title>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
 
     <!-- Bootstrap -->
@@ -16,69 +16,80 @@
   </head>
 
   <body class="bg-dark text-light">
-    <!-- NAVBAR compartida -->
-    <nav class="navbar navbar-dark bg-black shadow-sm mb-4">
-      <div class="container-fluid">
+    <!-- Navbar superior -->
+    <nav class="navbar navbar-dark bg-black shadow-sm">
+      <div class="container-fluid d-flex justify-content-between align-items-center">
         <span class="navbar-brand mb-0 h1">🛡️ Honeypot SIEM</span>
-        <div class="d-flex gap-3">
-          <a class="nav-link text-light" href="index.html">Dashboard</a>
-          <a class="nav-link text-light active" href="events.html">Eventos</a>
-          <a class="nav-link text-light" href="tokens.html">Tokens</a>
-        </div>
+        <button id="btn-logout" class="btn btn-outline-light btn-sm">
+          Cerrar sesión
+        </button>
       </div>
     </nav>
 
-    <main class="container pb-5">
-      <h3 class="mb-3">Eventos recientes</h3>
+    <div class="container-fluid">
+      <div class="row">
+        <!-- Sidebar -->
+        <aside class="col-12 col-md-3 col-lg-2 bg-black border-end min-vh-100">
+          <div class="p-3">
+            <h6 class="text-muted text-uppercase mb-3 small">Menú</h6>
+            <ul class="nav nav-pills flex-column">
+              <li class="nav-item mb-1">
+                <a href="index.html" class="nav-link">
+                  📊 Dashboard
+                </a>
+              </li>
+              <li class="nav-item mb-1">
+                <a href="events.html" class="nav-link active">
+                  📜 Eventos
+                </a>
+              </li>
+              <li class="nav-item mb-1">
+                <a href="tokens.html" class="nav-link">
+                  🔑 Tokens
+                </a>
+              </li>
+            </ul>
+          </div>
+        </aside>
 
-      <!-- FILTROS SENCILLOS -->
-      <form class="row g-3 mb-3" id="filters-form">
-        <div class="col-md-3">
-          <label class="form-label">IP origen (contiene)</label>
-          <input type="text" id="filter-ip" class="form-control form-control-sm" />
-        </div>
+        <!-- Contenido principal -->
+        <main class="col-12 col-md-9 col-lg-10 p-4">
+          <div class="d-flex justify-content-between align-items-center mb-3">
+            <h3 class="mb-0">Eventos registrados</h3>
+            <button id="btn-refresh" class="btn btn-sm btn-outline-light">
+              🔄 Refrescar
+            </button>
+          </div>
 
-        <div class="col-md-3">
-          <label class="form-label">Etiqueta (label)</label>
-          <input type="text" id="filter-label" class="form-control form-control-sm" />
-        </div>
-
-        <div class="col-md-2">
-          <label class="form-label">Máx. eventos</label>
-          <input type="number" id="filter-limit" class="form-control form-control-sm" value="50" min="1" max="500" />
-        </div>
-
-        <div class="col-md-2 d-flex align-items-end">
-          <button type="submit" class="btn btn-primary btn-sm w-100">
-            Aplicar filtros
-          </button>
-        </div>
-      </form>
-
-      <!-- TABLA DE EVENTOS -->
-      <div class="table-responsive bg-body rounded p-2">
-        <table class="table table-sm table-hover align-middle mb-0">
-          <thead class="table-dark">
-            <tr>
-              <th>ID</th>
-              <th>Fecha/Hora</th>
-              <th>IP origen</th>
-              <th>Label</th>
-              <th>Score</th>
-              <th>Comando</th>
-              <th>Razón</th>
-            </tr>
-          </thead>
-          <tbody id="events-body">
-            <!-- Se llena desde events.js -->
-          </tbody>
-        </table>
+          <div class="card bg-secondary-subtle border-0">
+            <div class="card-body">
+              <div class="table-responsive">
+                <table class="table table-dark table-hover align-middle" id="tbl-events">
+                  <thead>
+                    <tr>
+                      <th>ID</th>
+                      <th>Fecha/Hora</th>
+                      <th>IP origen</th>
+                      <th>Etiqueta</th>
+                      <th>Score</th>
+                      <th>Comando</th>
+                      <th>Acciones</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <!-- Filas generadas por JS -->
+                  </tbody>
+                </table>
+              </div>
+              <p id="events-empty" class="text-muted mt-2" style="display:none;">
+                No hay eventos registrados.
+              </p>
+            </div>
+          </div>
+        </main>
       </div>
+    </div>
 
-      <p class="mt-2 text-muted small" id="events-count"></p>
-    </main>
-
-    <!-- JS: usamos módulos ES6 -->
-    <script type="module" src="js/events.js"></script>
+    <script src="js/events.js"></script>
   </body>
 </html>

@@ -1,23 +1,37 @@
-// js/main.js
-
-// URL base del backend Flask
 const API_BASE = "http://127.0.0.1:8080/siem/api";
+
+function getToken() {
+  return localStorage.getItem("siem_jwt");
+}
+
+// Si no hay token → vuelve al login
+if (!getToken()) {
+  window.location.href = "login.html";
+}
 
 async function loadSummary() {
   try {
-    const res = await fetch(`${API_BASE}/stats/summary`);
+    const res = await fetch(`${API_BASE}/stats/summary`, {
+      headers: {
+        // Si en tu backend protegiste /stats con JWT, esto lo usa.
+        // Si no está protegido, no pasa nada por enviarlo igual.
+        "Authorization": `Bearer ${getToken()}`
+      }
+    });
+
     if (!res.ok) {
-      console.error("Respuesta no OK del backend:", res.status, res.statusText);
+      console.error("Error HTTP en /stats/summary:", res.status);
       return;
     }
 
     const data = await res.json();
 
-    // OJO: nombres de las keys según tu backend (app.py)
-    // app.py devuelve: total_events, unique_ips, events_today, by_label
-    const totalEvents = data.total_events ?? 0;
-    const byLabel = data.by_label || {};
+    // OJO: depende de cómo devuelves los campos en tu API stats
+    // Yo asumí: { total_events, by_label, events_today, unique_ips }
+    document.getElementById("metric-total").textContent =
+      data.total_events ?? 0;
 
+    const byLabel = data.by_label || {};
     const sospechosos =
       byLabel["sospechoso"] ||
       byLabel["suspicious"] ||
@@ -29,7 +43,6 @@ async function loadSummary() {
       byLabel["EXPLOIT"] ||
       0;
 
-    document.getElementById("metric-total").textContent = totalEvents;
     document.getElementById("metric-suspicious").textContent = sospechosos;
     document.getElementById("metric-exploit").textContent = exploits;
   } catch (err) {
@@ -37,8 +50,17 @@ async function loadSummary() {
   }
 }
 
-// Cuando el DOM está listo, cargamos métricas y actualizamos cada 10s
 document.addEventListener("DOMContentLoaded", () => {
+  // Botón de logout
+  const btnLogout = document.getElementById("btn-logout");
+  if (btnLogout) {
+    btnLogout.addEventListener("click", () => {
+      localStorage.removeItem("siem_jwt");
+      window.location.href = "login.html";
+    });
+  }
+
+  // Cargar métricas
   loadSummary();
   setInterval(loadSummary, 10000);
 });

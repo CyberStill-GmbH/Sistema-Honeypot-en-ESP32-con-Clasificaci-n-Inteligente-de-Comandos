@@ -1,4 +1,4 @@
-from .app import create_app
+from siem.app import create_app
 
 # Creamos la app del SIEM y la levantamos
 if __name__ == "__main__":

@@ -1,108 +1,123 @@
-// js/events.js
-import { API_BASE } from "./config.js";
+const API_BASE = "http://127.0.0.1:8080/siem/api";
 
-const tbody = document.getElementById("events-body");
-const countLabel = document.getElementById("events-count");
-const form = document.getElementById("filters-form");
-const ipInput = document.getElementById("filter-ip");
-const labelInput = document.getElementById("filter-label");
-const limitInput = document.getElementById("filter-limit");
+function getToken() {
+  return localStorage.getItem("siem_jwt");
+}
+
+// Proteger la página: si no hay token, vuelve al login
+if (!getToken()) {
+  window.location.href = "login.html";
+}
 
 async function loadEvents() {
+  const tbody = document.querySelector("#tbl-events tbody");
+  const emptyMsg = document.getElementById("events-empty");
+
+  tbody.innerHTML = "";
+  emptyMsg.style.display = "none";
+
   try {
-    const limit = parseInt(limitInput.value || "50", 10);
+    const res = await fetch(`${API_BASE}/events?limit=100&offset=0`, {
+      headers: {
+        "Authorization": `Bearer ${getToken()}`
+      }
+    });
 
-    // Construimos la URL con parámetros básicos (limit / offset)
-    const url = new URL(`${API_BASE}/events`);
-    url.searchParams.set("limit", isNaN(limit) ? 50 : limit);
-    url.searchParams.set("offset", 0);
-
-    const res = await fetch(url);
     if (!res.ok) {
-      console.error("Error al obtener eventos:", res.status, res.statusText);
+      console.error("Error HTTP al obtener eventos:", res.status);
+      emptyMsg.textContent = "No se pudo obtener la lista de eventos.";
+      emptyMsg.style.display = "block";
       return;
     }
 
     const data = await res.json();
-    const events = data.events || [];
+    const events = data.events || data || [];
 
-    // Aplico filtros simples en el cliente
-    const ipFilter = ipInput.value.trim().toLowerCase();
-    const labelFilter = labelInput.value.trim().toLowerCase();
+    if (events.length === 0) {
+      emptyMsg.textContent = "No hay eventos registrados.";
+      emptyMsg.style.display = "block";
+      return;
+    }
 
-    const filtered = events.filter((ev) => {
-      const ipOk = ipFilter
-        ? (ev.source_ip || "").toLowerCase().includes(ipFilter)
-        : true;
-      const labelOk = labelFilter
-        ? (ev.label || "").toLowerCase().includes(labelFilter)
-        : true;
-      return ipOk && labelOk;
+    for (const ev of events) {
+      const tr = document.createElement("tr");
+
+      const score = (ev.score !== null && ev.score !== undefined)
+        ? ev.score.toFixed(2)
+        : "-";
+
+      const cmdShort = ev.raw_cmd && ev.raw_cmd.length > 60
+        ? ev.raw_cmd.slice(0, 60) + "..."
+        : (ev.raw_cmd || "");
+
+      tr.innerHTML = `
+        <td>${ev.id}</td>
+        <td>${ev.timestamp || ""}</td>
+        <td>${ev.source_ip || ""}</td>
+        <td>${ev.label || ""}</td>
+        <td>${score}</td>
+        <td><code>${cmdShort}</code></td>
+        <td>
+          <button class="btn btn-sm btn-outline-danger btn-delete" data-id="${ev.id}">
+            Eliminar
+          </button>
+        </td>
+      `;
+
+      tbody.appendChild(tr);
+    }
+
+    // Listeners de eliminar
+    tbody.querySelectorAll(".btn-delete").forEach(btn => {
+      btn.addEventListener("click", async () => {
+        const id = btn.getAttribute("data-id");
+        if (!confirm(`¿Eliminar evento ${id}?`)) return;
+
+        try {
+          const delRes = await fetch(`${API_BASE}/admin/delete-event/${id}`, {
+            method: "DELETE",
+            headers: {
+              "Authorization": `Bearer ${getToken()}`
+            }
+          });
+
+          if (!delRes.ok) {
+            alert("No se pudo eliminar el evento.");
+            return;
+          }
+
+          // Recargar la tabla
+          loadEvents();
+        } catch (err) {
+          console.error("Error al eliminar evento:", err);
+          alert("Error de conexión al eliminar.");
+        }
+      });
     });
 
-    renderEvents(filtered);
-    countLabel.textContent = `Mostrando ${filtered.length} de ${data.count ?? events.length} eventos.`;
   } catch (err) {
     console.error("Error cargando eventos:", err);
+    emptyMsg.textContent = "Error de conexión al obtener eventos.";
+    emptyMsg.style.display = "block";
   }
 }
 
-function renderEvents(events) {
-  tbody.innerHTML = "";
-
-  if (!events.length) {
-    const tr = document.createElement("tr");
-    const td = document.createElement("td");
-    td.colSpan = 7;
-    td.className = "text-center text-muted";
-    td.textContent = "No hay eventos para los filtros actuales.";
-    tr.appendChild(td);
-    tbody.appendChild(tr);
-    return;
-  }
-
-  for (const ev of events) {
-    const tr = document.createElement("tr");
-
-    const tdId = document.createElement("td");
-    tdId.textContent = ev.id;
-    tr.appendChild(tdId);
-
-    const tdTs = document.createElement("td");
-    tdTs.textContent = ev.timestamp || "";
-    tr.appendChild(tdTs);
-
-    const tdIp = document.createElement("td");
-    tdIp.textContent = ev.source_ip || "";
-    tr.appendChild(tdIp);
-
-    const tdLabel = document.createElement("td");
-    tdLabel.textContent = ev.label || "";
-    tr.appendChild(tdLabel);
-
-    const tdScore = document.createElement("td");
-    tdScore.textContent = ev.score != null ? ev.score.toFixed(2) : "";
-    tr.appendChild(tdScore);
-
-    const tdCmd = document.createElement("td");
-    tdCmd.textContent = ev.raw_cmd || "";
-    tr.appendChild(tdCmd);
-
-    const tdReason = document.createElement("td");
-    tdReason.textContent = ev.reason || "";
-    tr.appendChild(tdReason);
-
-    tbody.appendChild(tr);
-  }
-}
-
-// Manejar envío del formulario de filtros
-form.addEventListener("submit", (e) => {
-  e.preventDefault();
-  loadEvents();
-});
-
-// Cargar al inicio
 document.addEventListener("DOMContentLoaded", () => {
+  const btnLogout = document.getElementById("btn-logout");
+  if (btnLogout) {
+    btnLogout.addEventListener("click", () => {
+      localStorage.removeItem("siem_jwt");
+      window.location.href = "login.html";
+    });
+  }
+
+  const btnRefresh = document.getElementById("btn-refresh");
+  if (btnRefresh) {
+    btnRefresh.addEventListener("click", () => {
+      loadEvents();
+    });
+  }
+
+  // Cargar eventos al inicio
   loadEvents();
 });
