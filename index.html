@@ -1,0 +1,352 @@
+<!doctype html>
+<!--
+  Honeypot con ESP32 - Página web de presentación de proyecto
+  -----------------------------------------------------------
+-->
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Honeypot ESP32 — Proyecto de Investigación</title>
+  <meta name="description" content="Honeypot con ESP32 para dispositivos IoT: monitoreo, análisis y clasificación IA de comandos para mejorar la seguridad en tiempo real.">
+  <style>
+    /* Estilos básicos, fáciles de editar */
+    :root{--bg:#0f1724;--card:#0b1220;--accent:#06b6d4;--muted:#9aa4b2;--glass: rgba(255,255,255,0.03)}
+    html,body{height:100%;margin:0;font-family:Inter,Segoe UI,Arial,Helvetica,sans-serif;background:linear-gradient(180deg,#071028 0%,#081426 100%);color:#e6eef6}
+    .container{max-width:1100px;margin:32px auto;padding:24px}
+    header{display:flex;gap:16px;align-items:center}
+    .logo{width:64px;height:64px;border-radius:8px;background:var(--glass);display:flex;align-items:center;justify-content:center;font-weight:700}
+    h1{margin:0;font-size:28px}
+    nav{margin-left:auto}
+    nav a{color:var(--muted);text-decoration:none;margin-left:16px}
+    .hero{display:grid;grid-template-columns:1fr 360px;gap:24px;margin-top:20px}
+    .card{background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));border-radius:12px;padding:18px;box-shadow:0 6px 18px rgba(2,6,23,0.6);}
+    .muted{color:var(--muted)}
+    .kbd{background:#041123;padding:6px 8px;border-radius:6px;font-family:monospace;font-size:13px}
+    section{margin-top:20px}
+    .grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+    .flex{display:flex;gap:12px}
+    footer{margin-top:36px;color:var(--muted);font-size:14px;text-align:center}
+    img.responsive{width:100%;height:auto;border-radius:8px}
+    pre{background:#041022;padding:12px;border-radius:8px;overflow:auto}
+    /* Responsive */
+    @media (max-width:900px){.hero{grid-template-columns:1fr}.grid-3{grid-template-columns:1fr}.logo{width:52px;height:52px}}
+    /* Highlight area for editable sections */
+    .editable{outline:2px dashed rgba(6,182,212,0.12);padding:6px;border-radius:6px}
+    .btn{background:var(--accent);color:#012;display:inline-block;padding:8px 12px;border-radius:8px;text-decoration:none;font-weight:600}
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div class="logo">ESP</div>
+      <div>
+        <h1>Honeypot con ESP32 — Proyecto de Investigación</h1>
+        <div class="muted">Monitoreo y clasificación IA de comandos en entornos IoT — presentación del proyecto</div>
+      </div>
+      <nav>
+        <a href="#resumen">Resumen</a>
+        <a href="#metodo">Metodología</a>
+        <a href="#resultados">Resultados</a>
+        <a href="#descargas">Descargas</a>
+      </nav>
+    </header>
+
+    <div class="hero">
+      <div class="card">
+        <h2 id="resumen">Resumen ejecutivo</h2>
+        <div class="muted">(EDITABLE)</div>
+        <p class="editable" contenteditable="true">Este proyecto presenta un honeypot implementado sobre la plataforma ESP32 para dispositivos IoT. El sistema simula servicios y acepta comandos, registrando actividad y analizando en tiempo real mediante modelos de inteligencia artificial que clasifican acciones como legítimas o maliciosas. El objetivo es estudiar patrones de ataque, desarrollar contramedidas y mejorar la postura de seguridad en entornos IoT.</p>
+
+        <section>
+          <h3>Características principales</h3>
+          <ul>
+            <li>Hardware: ESP32 (Wi‑Fi / BLE)</li>
+            <li>Monitoreo en tiempo real de comandos y tráfico</li>
+            <li>Clasificación IA (modelo ligero inferido en edge o en la nube)</li>
+            <li>Registro seguro y anonimización de datos</li>
+            <li>Interfaz web local para visualización</li>
+          </ul>
+        </section>
+
+        <section>
+          <h3>Objetivos</h3>
+          <ol>
+            <li>Detectar y clasificar intentos de intrusión a dispositivos IoT.</li>
+            <li>Recolectar y analizar patrones de comando/ataque.</li>
+            <li>Proveer una base reproducible para investigación y pruebas de seguridad.</li>
+          </ol>
+        </section>
+
+      </div>
+
+      <aside class="card">
+        <h3>Resumen técnico</h3>
+        <p class="muted">Arquitectura:</p>
+        <img src="assets/diagram.png" alt="Diagrama arquitectura" class="responsive" onerror="this.style.opacity=0.6">
+        <p class="muted">Estado del repositorio:</p>
+        <p><span class="kbd">/firmware</span> · <span class="kbd">/server</span> · <span class="kbd">/notebooks</span></p>
+        <a class="btn" href="#descargas">Descargas & Repo</a>
+      </aside>
+    </div>
+
+    <section id="metodo" class="card">
+      <h2>Metodología</h2>
+      <p class="editable" contenteditable="true">Detalle paso a paso del proceso experimental, pruebas, dataset y métricas utilizadas. Este apartado debe incluir: diseño del honeypot en ESP32 (servicios simulados), protocolos expuestos, esquema de registro de comandos (timestamps, origen, payload), pipeline de preprocesamiento y arquitectura del modelo de IA (por ejemplo: embeddings + clasificador ligero, o modelo en la nube con API REST).</p>
+
+      <div class="grid-3" style="margin-top:12px">
+        <div class="card">
+          <h4>Hardware</h4>
+          <p class="muted">Componentes</p>
+          <ul>
+            <li>ESP32 dev board</li>
+            <li>Fuente 5V</li>
+            <li>Switches / LEDs (opcional)</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h4>Firmware</h4>
+          <p class="muted">Stack</p>
+          <ul>
+            <li>Arduino-ESP32 o ESP-IDF</li>
+            <li>Task: listener + logger + uploader</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h4>IA & Backend</h4>
+          <p class="muted">Opciones</p>
+          <ul>
+            <li>On‑edge: TinyML / quantized model</li>
+            <li>Cloud: API REST + pipeline (ingest, feature extract, inferencia)</li>
+          </ul>
+        </div>
+      </div>
+
+      <h3>Pipeline de datos</h3>
+      <pre>
+  1) Captura -> 2) Normalización -> 3) Anonimización -> 4) Extracción de features -> 5) Clasificación IA -> 6) Almacenamiento & Alertas
+      </pre>
+    </section>
+
+    <section id="resultados" class="card">
+      <h2>Resultados y análisis</h2>
+      <p class="editable" contenteditable="true">Aquí se muestran métricas clave (TP, FP, precisión, recall), ejemplos de comandos capturados y análisis de patrones. Incluye gráficos y tablas con la tasa de detección por tipo de amenaza y líneas de tiempo de incidentes.</p>
+
+      <div class="flex" style="margin-top:12px">
+        <div style="flex:1" class="card">
+          <h4>Métricas</h4>
+          <ul>
+            <li>Precisión: 0.92 (ejemplo)</li>
+            <li>Recall: 0.88 (ejemplo)</li>
+            <li>F1-score: 0.90 (ejemplo)</li>
+          </ul>
+        </div>
+        <div style="width:320px" class="card">
+          <h4>Capturas</h4>
+          <img src="assets/screenshot-1.png" class="responsive" alt="Captura">
+        </div>
+      </div>
+
+      <h3>Análisis de seguridad</h3>
+      <p class="muted">Lecciones aprendidas y recomendaciones operativas.</p>
+      <ul>
+        <li>Segmentar redes IoT y aplicar políticas de acceso estricto.</li>
+        <li>Usar honeypots para validar reglas de detección y recopilar IoCs.</li>
+        <li>Implementar pipeline de respuesta automática para mitigar ataques en tiempo real.</li>
+      </ul>
+    </section>
+
+    <section id="implementacion" class="card">
+      <h2>Implementación</h2>
+      <h3>Fragmentos útiles</h3>
+      <p class="muted">Ejemplo de snippet de captura (firmware en Arduino):</p>
+      <pre>// PSEUDOCÓDIGO - reemplaza por tu implementación real
+void setup(){
+  Serial.begin(115200);
+  WiFi.begin(ssid,pass);
+  // inicializar servidor/listener
+}
+
+void loop(){
+  if(client.connected()){
+    String cmd = client.readStringUntil('\n');
+    logCommand(cmd);
+    auto label = classify(cmd); // IA: local o remota
+    if(label==MALICIOUS) triggerAlert();
+  }
+}
+      </pre>
+
+      <h3>Ejemplo: API REST para inferencia</h3>
+      <pre>POST /infer
+Body: {"payload":"...","timestamp":"...","src":"..."}
+Response: {"label":"malicious","score":0.97}
+      </pre>
+    </section>
+
+    <section id="descargas" class="card">
+      <h2>Repositorios y descargas</h2>
+      <p class="editable" contenteditable="true">Incluye aquí enlaces a GitHub, datasets, notebooks y Docker images. Además, aquí puedes añadir el enlace de despliegue en **GitHub Pages** una vez subas el repositorio. Si quieres, puedo generar un README.md y estructura de repositorio completa.</p>
+      <p><strong>GitHub Pages:</strong> <a href="https://TU-USUARIO.github.io/Honeypot-esp32-proyecto-web" target="_blank">https://TU-USUARIO.github.io/Honeypot-esp32-proyecto-web</a> (reemplaza TU-USUARIO con tu nombre de GitHub)</p>
+      <ul>
+        <li>Firmware (ESP32): <span class="muted">/firmware</span></li>
+        <li>Backend & Modelos: <span class="muted">/server</span></li>
+        <li>Notebooks de análisis: <span class="muted">/notebooks</span></li>
+      </ul>
+
+      <h3>Licencia y ética</h3>
+      <p class="muted">Notas legales</p>
+      <p>Este proyecto debe usarse únicamente en entornos de prueba y con dispositivos/de redes bajo control del investigador. No desplegar en producción sin consentimiento y sin cumplir las regulaciones locales sobre interceptación y almacenamiento de datos.</p>
+    </section>
+
+    <section id="bibliografia" class="card">
+      <h2>Referencias y lecturas</h2>
+      <ol>
+        <li>Artículos relevantes sobre honeypots y ESP32 (IEEE) — reemplaza con citas concretas.</li>
+        <li>Documentación ESP32: Espressif</li>
+        <li>Documentos sobre TinyML y despliegue en microcontroladores.</li>
+      </ol>
+    </section>
+
+    <section class="card">
+      <h2>Apéndices</h2>
+      <h3>Checklist para la presentación</h3>
+      <ul>
+        <li>Resumen ejecutivo (1 página)</li>
+        <li>Diagrama de arquitectura</li>
+        <li>Resultados & métricas</li>
+        <li>Demo en vivo o grabación</li>
+        <li>Repositorio con código y dataset (anonimizado)</li>
+      </ul>
+    </section>
+
+    <footer>
+      <div>© Proyecto Honeypot ESP32 — Edita este archivo para personalizar la presentación.</div>
+      <div style="margin-top:6px;color:var(--muted)">Contacto: <span class="editable" contenteditable="true">tu.email@ejemplo.com</span></div>
+    </footer>
+  </div>
+
+  <!-- Scripts mínimos para interacción: guardar sección como archivo y copiar enlace -->
+  <script>
+    // Botón rápido para exportar el contenido visible como HTML (útil para demo rápido)
+    function downloadHTML(){
+      const html = document.documentElement.outerHTML;
+      const blob = new Blob([html],{type:'text/html'});
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = 'honeypot-esp32-presentacion.html';
+      a.click();
+    }
+    // Añadir atajo 'Ctrl+S' para descargar (no sobreescribe save del navegador si se usa)
+    document.addEventListener('keydown',function(e){
+      if((e.ctrlKey||e.metaKey) && e.key==='s'){
+        e.preventDefault();
+        downloadHTML();
+      }
+    });
+  </script>
+</body>
+</html>
+
+<!-- ===================== REPOSITORIO GENERADO ===================== -->
+<!-- A continuación se incluye la estructura completa del repositorio.
+     Copia cada bloque en sus respectivos archivos dentro de tu nuevo
+     repositorio GitHub Pages. -->
+
+<!-- 📁 Estructura propuesta:
+Honeypot-ESP32-IoT/
+│
+├── index.html               # Página principal (ya generada arriba)
+├── README.md
+├── assets/
+│     ├── logo.png
+│     ├── diagram.png
+│     ├── screenshot-1.png
+│     └── esp32-pinout.png
+│
+├── firmware/
+│     ├── main.ino
+│     └── README.md
+│
+├── server/
+│     ├── api.py
+│     ├── model.pkl
+│     └── README.md
+│
+└── notebooks/
+      └── analisis.ipynb
+-->
+
+<!-- ===================== README.md ===================== -->
+<details><summary><b>README.md</b></summary>
+
+```md
+# Honeypot con ESP32 para Dispositivos IoT
+
+Proyecto de investigación que implementa un honeypot basado en ESP32 capaz de
+capturar, registrar y analizar comandos en tiempo real. Usa IA para clasificar
+acciones legítimas vs maliciosas y estudiar ataques a entornos IoT.
+
+## Características
+- Captura de comandos y tráfico IoT
+- Clasificación mediante un modelo IA (edge o cloud)
+- Honeypot seguro para investigación
+- Backend API + notebooks de análisis
+
+## Estructura
+```
+```txt
+/firmware      → Código para ESP32
+/server        → Backend + IA
+/notebooks     → Análisis de datos y métricas
+/assets        → Imágenes y recursos
+index.html     → Página oficial del proyecto
+```
+```md
+## Deploy en GitHub Pages
+1. Sube todo el repo.
+2. Ve a *Settings → Pages*.
+3. Activa Pages desde la rama `main`.
+4. URL final: https://TU-USUARIO.github.io/Honeypot-ESP32-IoT
+
+## Créditos
+Proyecto académico — uso solo en entornos controlados.
+```
+</details>
+
+<!-- ===================== firmware/main.ino ===================== -->
+<details><summary><b>firmware/main.ino</b></summary>
+
+```cpp
+#include <WiFi.h>
+
+const char* ssid = "tuSSID";
+const char* pass = "tuPASS";
+
+WiFiServer server(8080);
+
+void setup(){
+  Serial.begin(115200);
+  WiFi.begin(ssid, pass);
+  while(WiFi.status()!=WL_CONNECTED){ delay(200); }
+  server.begin();
+}
+
+void loop(){
+  WiFiClient client = server.available();
+  if(client){
+    String cmd = client.readStringUntil('\n');
+    Serial.println("CMD: " + cmd);
+    // Enviar al backend IA
+  }
+}
+```
+</details>
+
+<!-- ===================== server/api.py ===================== -->
+<details><summary><b>server/api.py</b></summary>
+
+```python
+from flask import Flask, request, jsonify
+
+import jobl
