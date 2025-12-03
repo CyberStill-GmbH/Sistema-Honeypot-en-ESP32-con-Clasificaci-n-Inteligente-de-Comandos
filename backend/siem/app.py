@@ -1,6 +1,7 @@
 ﻿from flask import Flask, jsonify
 from werkzeug.security import generate_password_hash
 import secrets
+from flask_cors import CORS
 
 from .config_siem import SECRET_KEY, DEBUG
 from .models import init_db, SessionLocal, AdminUser, ApiToken
@@ -58,6 +59,8 @@ def create_app():
     app.config["SECRET_KEY"] = SECRET_KEY
     app.config["DEBUG"] = DEBUG
 
+    CORS(app)
+
     # Inicializar DB
     init_db()
     _ensure_default_admin_and_token()
@@ -69,10 +72,10 @@ def create_app():
 
     # Registrar blueprints
     app.register_blueprint(api_auth)     # /siem/api/auth/...
-    app.register_blueprint(api_admin)    # /siem/api/admin/... (lo que tengas definido)
-    app.register_blueprint(api_stats)    # /siem/api/stats/..., /siem/api/events si lo defines ahí
+    app.register_blueprint(api_admin)    # /siem/api/admin/...
+    app.register_blueprint(api_stats)    # /siem/api/stats/...
     app.register_blueprint(api_ingest)   # /siem/api/ingest
-    app.register_blueprint(api_tokens)   # /siem/api/tokens/...
+    app.register_blueprint(api_tokens)  # /siem/api/tokens/...
 
     return app
 

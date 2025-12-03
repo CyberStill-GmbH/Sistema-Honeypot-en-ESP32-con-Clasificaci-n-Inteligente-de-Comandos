@@ -1,5 +1,5 @@
 // js/auth.js
-import { API_BASE } from "./config.js";
+export const API_BASE = "http://127.0.0.1:8080/siem/api";
 
 console.log("auth.js cargado ✅");
 
@@ -35,7 +35,7 @@ async function loginRequest(username, password) {
 document.addEventListener("DOMContentLoaded", () => {
   console.log("DOM listo en login.html");
 
-  const form = document.getElementById("login-form");
+  const form = document.getElementById("form-login");
   const userInput = document.getElementById("user");
   const passInput = document.getElementById("pass");
   const errorBox = document.getElementById("login-error");
@@ -60,7 +60,7 @@ document.addEventListener("DOMContentLoaded", () => {
       setToken(data.jwt);
 
       // Redirigir al dashboard
-      window.location.href = "index.html";
+      window.location.href = "/index.html";
     } catch (err) {
       console.error("Error en login:", err);
       errorBox.textContent = err.message || "Error al iniciar sesión";

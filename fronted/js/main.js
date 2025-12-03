@@ -6,7 +6,7 @@ function getToken() {
 
 // Si no hay token → vuelve al login
 if (!getToken()) {
-  window.location.href = "login.html";
+  window.location.href = "/login.html";
 }
 
 async function loadSummary() {
@@ -56,7 +56,7 @@ document.addEventListener("DOMContentLoaded", () => {
   if (btnLogout) {
     btnLogout.addEventListener("click", () => {
       localStorage.removeItem("siem_jwt");
-      window.location.href = "login.html";
+      window.location.href = "/login.html";
     });
   }
 

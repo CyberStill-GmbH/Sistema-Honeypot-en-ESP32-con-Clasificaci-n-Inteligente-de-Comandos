@@ -32,7 +32,7 @@ document.addEventListener("DOMContentLoaded", () => {
       localStorage.setItem("siem_jwt", data.token);
 
       // Redirigir al dashboard principal
-      window.location.href = "index.html";
+      window.location.href = "/index.html";
     } catch (err) {
       console.error("Error en login:", err);
       errorBox.textContent = "Error de conexión con el backend";
