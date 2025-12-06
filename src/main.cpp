@@ -1,9 +1,13 @@
 #include <Arduino.h>
 #include <WiFi.h>
 #include <WebServer.h>
+#include <HTTPClient.h>
 
 #define WIFI_SSID "Guevara"
 #define WIFI_PASSWORD "Guevara123720#"
+
+// Function prototypes
+void enviarAlSIEM(String cmd);
 
 WebServer server(80);  // Servidor en el puerto 80
 
@@ -96,19 +100,13 @@ void sendHtml() {
 }
 
 // ------------------- Manejar el comando enviado -------------------
-void handleSendCommand() {
+void handleSendCommand(){
   if (server.hasArg("cmd")) {
     String cmd = server.arg("cmd");
-    Serial.println("Comando recibido: " + cmd);
-
-    // Lógica para manejar el comando
-    // Aquí puedes incluir la lógica para ejecutar o procesar el comando malicioso
-    server.send(200, "text/plain", "Comando recibido: " + cmd);
-  } else {
-    server.send(400, "text/plain", "Comando vacío");
+    enviarAlSIEM(cmd);
+    server.send(200, "text/plain", "Evento enviado al SIEM");
   }
 }
-
 // ------------------- Configuración del servidor HTTP -------------------
 void setup() {
   Serial.begin(115200);
@@ -125,6 +123,23 @@ void setup() {
 
   server.begin();
   Serial.println("Servidor HTTP iniciado en puerto 80");
+}
+
+// ------------------- Enviar evento al SIEM -------------------
+void enviarAlSIEM(String cmd) {
+  if (WiFi.status() == WL_CONNECTED) {
+    HTTPClient http;
+    http.begin("http://192.168.18.21:8080/siem/api/iot/event");
+    http.addHeader("Content-Type", "application/json");
+
+    String json = "{\"cmd\":\"" + cmd + "\"}";
+    int code = http.POST(json);
+
+    Serial.print("Respuesta SIEM: ");
+    Serial.println(code);
+
+    http.end();
+  }
 }
 
 // ------------------- Loop -------------------

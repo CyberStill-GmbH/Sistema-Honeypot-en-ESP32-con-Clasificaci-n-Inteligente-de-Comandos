@@ -124,3 +124,9 @@ timestamp,source_ip,raw_cmd,label,score,reason
 2025-11-26T22:31:27.893213,10.168.146.151,toggle/1,normal,0.45669215525281515,modelo cargado
 2025-11-26T22:31:28.518120,10.168.146.151,toggle/1,normal,0.45669215525281515,modelo cargado
 2025-11-26T22:31:28.845613,10.168.146.151,toggle/1,normal,0.45669215525281515,modelo cargado
+2025-12-06T06:19:35.688693,127.0.0.1,rm -rf /,normal,0.5638713454818298,modelo cargado
+2025-12-06T07:29:02.574382,192.168.18.22,sudo passwd root,sospechoso,0.40002286811140286,modelo cargado
+2025-12-06T07:31:02.017865,192.168.18.22,nmap -sS 192.168.1.0/24,sospechoso,0.4833339474282014,modelo cargado
+2025-12-06T07:31:56.085334,192.168.18.22,<a href = http://malicious-site.com></a>,sospechoso,0.5312468701013615,modelo cargado
+2025-12-06T07:34:02.339606,192.168.18.22,chmod +x malicious_script.sh && ./malicious_script.sh,exploit,0.4586033682174606,modelo cargado
+2025-12-06T07:36:27.396441,192.168.18.22,"pinMode(15, 1)",normal,0.45669215525281515,modelo cargado

@@ -9,6 +9,45 @@ if (!getToken()) {
   window.location.href = "/login.html";
 }
 
+async function loadEvents() {
+  try {
+    const res = await fetch(`${API_BASE}/events`, {
+      headers: {
+        "Authorization": `Bearer ${getToken()}`
+      }
+    });
+
+    if (!res.ok) {
+      console.error("Error HTTP en /events:", res.status);
+      return;
+    }
+
+    const data = await res.json();
+    const tbody = document.getElementById("events-tbody");
+    tbody.innerHTML = "";
+
+    data.forEach(e => {
+      const tr = document.createElement("tr");
+
+      tr.innerHTML = `
+        <td>${e.id}</td>
+        <td>${e.source_ip}</td>
+        <td>${e.raw_cmd}</td>
+        <td class="status-${e.label}">${e.label}</td>
+        <td>${e.score.toFixed(2)}</td>
+        <td>${e.reason}</td>
+        <td>${new Date(e.created_at).toLocaleString()}</td>
+      `;
+
+      tbody.appendChild(tr);
+    });
+  } catch (err) {
+    console.error("Error cargando eventos:", err);
+  }
+}
+
+
+
 async function loadSummary() {
   try {
     const res = await fetch(`${API_BASE}/stats/summary`, {
@@ -63,4 +102,7 @@ document.addEventListener("DOMContentLoaded", () => {
   // Cargar métricas
   loadSummary();
   setInterval(loadSummary, 10000);
+  loadEvents();
+  setInterval(loadEvents, 10000); // refresca cada 10s
+
 });

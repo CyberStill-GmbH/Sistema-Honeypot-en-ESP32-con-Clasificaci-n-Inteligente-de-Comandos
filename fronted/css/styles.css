@@ -1,50 +1,109 @@
-/* Fondo oscuro para que combine con tu dashboard */
+:root {
+    --bg-main: #0f172a;
+    --bg-card: #1e293b;
+    --bg-soft: #334155;
+
+    --text-main: #e5e7eb;
+    --text-soft: #94a3b8;
+
+    --green: #22c55e;
+    --yellow: #facc15;
+    --red: #ef4444;
+    --blue: #3b82f6;
+}
+
+/* Base */
 body {
-    background-color: #1a1d21;
-    color: #e9ecef;
+    background-color: var(--bg-main);
+    color: var(--text-main);
     font-family: "Segoe UI", sans-serif;
 }
 
-/* Tarjetas más modernas */
-.card {
-    border-radius: 12px;
-    background-color: #2a2d31;
-    border: 1px solid #3a3d42;
+/* Navbar */
+.navbar {
+    background-color: var(--bg-card) !important;
 }
 
-/* Título navbar */
 .navbar-brand {
     font-size: 22px;
     font-weight: bold;
+    color: var(--text-main) !important;
+}
+
+/* Cards */
+.card {
+    background-color: var(--bg-card);
+    border-radius: 14px;
+    border: 1px solid var(--bg-soft);
+    color: var(--text-main);
 }
 
 /* Tablas */
 .table {
-    color: #e9ecef;
+    color: var(--text-main);
+}
+
+.table th {
+    color: var(--text-soft);
+    font-weight: 600;
 }
 
 .table td, .table th {
-    vertical-align: middle;
-    border-color: #3a3d42 !important;
+    border-color: var(--bg-soft);
 }
 
-/* Inputs y botones modernos */
-input, button {
-    border-radius: 8px !important;
-}
-
+/* Inputs */
 input {
-    background-color: #2a2d31;
-    border: 1px solid #3a3d42;
-    color: #e9ecef;
+    background-color: var(--bg-soft);
+    border: 1px solid var(--bg-soft);
+    color: var(--text-main);
+    border-radius: 10px;
+}
+
+input::placeholder {
+    color: var(--text-soft);
 }
 
 input:focus {
-    border-color: #0d6efd;
-    box-shadow: 0 0 0 0.2rem rgba(13,110,253,.25);
+    border-color: var(--blue);
+    box-shadow: 0 0 0 0.15rem rgba(59, 130, 246, 0.4);
 }
 
 /* Botones */
 button {
+    border-radius: 10px;
     font-weight: 500;
+    color: #fff;
+}
+
+/* Estados por severidad */
+.status-normal {
+    color: var(--green);
+    font-weight: bold;
+}
+
+.status-sospechoso {
+    color: var(--yellow);
+    font-weight: bold;
+}
+
+.status-exploit {
+    color: var(--red);
+    font-weight: bold;
+}
+
+/* Badges */
+.badge-normal {
+    background-color: rgba(34, 197, 94, 0.15);
+    color: var(--green);
+}
+
+.badge-sospechoso {
+    background-color: rgba(250, 204, 21, 0.15);
+    color: var(--yellow);
+}
+
+.badge-exploit {
+    background-color: rgba(239, 68, 68, 0.15);
+    color: var(--red);
 }

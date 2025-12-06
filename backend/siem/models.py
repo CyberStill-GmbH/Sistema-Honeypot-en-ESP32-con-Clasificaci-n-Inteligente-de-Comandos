@@ -78,4 +78,6 @@ class Event(Base):
 # INIT DB
 # ---------------------------------------------------------------------
 def init_db():
-    Base.metadata.create_all(bind=engine)
+    global engine
+    engine = create_engine(DATABASE_URI)
+    Base.metadata.create_all(engine)

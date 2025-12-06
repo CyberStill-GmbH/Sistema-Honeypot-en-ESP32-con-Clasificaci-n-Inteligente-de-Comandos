@@ -3,7 +3,7 @@ from werkzeug.security import generate_password_hash
 import secrets
 from flask_cors import CORS
 
-from .config_siem import SECRET_KEY, DEBUG
+from .config_siem import SECRET_KEY, DEBUG, DATABASE_URI
 from .models import init_db, SessionLocal, AdminUser, ApiToken
 
 # Importar blueprints (rutas API)
@@ -12,7 +12,7 @@ from backend.siem.routes.api_admin import api_admin
 from backend.siem.routes.api_stats import api_stats
 from backend.siem.routes.api_ingest import api_ingest
 from backend.siem.routes.api_tokens import api_tokens
-
+from backend.siem.routes.api_iot import api_iot
 
 # ============================================================
 #   CREAR ADMIN + TOKEN POR DEFECTO
@@ -76,7 +76,7 @@ def create_app():
     app.register_blueprint(api_stats)    # /siem/api/stats/...
     app.register_blueprint(api_ingest)   # /siem/api/ingest
     app.register_blueprint(api_tokens)  # /siem/api/tokens/...
-
+    app.register_blueprint(api_iot)     # /siem/api/events/...
     return app
 
 

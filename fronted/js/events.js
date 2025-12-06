@@ -116,8 +116,13 @@ document.addEventListener("DOMContentLoaded", () => {
     btnRefresh.addEventListener("click", () => {
       loadEvents();
     });
+  
   }
+  // Cargar métricas
+  loadSummary();
+  setInterval(loadSummary, 10000);
 
-  // Cargar eventos al inicio
+  // Cargar tabla de eventos
   loadEvents();
+  setInterval(loadEvents, 10000);
 });
